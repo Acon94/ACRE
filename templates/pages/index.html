@@ -1,0 +1,209 @@
+
+{% extends 'base.html' %} 
+
+
+
+
+{% load static %}
+{% load humanize %}
+{% block title%} | Welcome {% endblock %}
+
+{% block content %}
+<!-- Showcase -->
+<section id="showcase">
+    <div class="container form-container">
+        <div class="left text-left text-wrap">
+            <p><span id="ny">New York</span><br> Real Estate <br> Just<br> Got Easy</p>
+        </div>
+        <div class="right text-center py-4 mb-2">
+            <h1 class="display-4 mb-2">
+                Find you're Ideal Home Today
+            </h1>
+            <p class="lead  mb-1">AC Real esate aims to make finding a roof to put over you're head and start to make a
+                home</p>
+
+            <form action="{% url 'search' %}">
+                <!-- Form Row 1 -->
+                <div class="form-row">
+                    <div class="col-md-12 mb-1 py-2">
+                        <label class="sr-only">Keywords</label>
+                        <input type="text" name="keywords" class="form-control"
+                            placeholder="Keyword (Pool, Garage, etc)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-1 py-2">
+                        <label class="sr-only">City</label>
+                        <input type="text" name="city" class="form-control" placeholder="Area(Williamsburg, Maspeth etc)" value={{ values.city }}>
+                    </div>
+                </div>
+                <div class="form-row">
+
+                    <div class="col-md-12 mb-1 py-2">
+                        <label class="sr-only">State</label>
+                        <select name="state" class="form-control">
+                            <option selected="true" disabled="disabled">Location (All)</option>
+                            {% for key,value in state_choices.items %}
+
+                                <option value="{{key}}">{{value}}</option>
+                            {% endfor %}
+
+
+                        </select>
+                    </div>
+                </div>
+                <!-- Form Row 2 -->
+                <div class="form-row">
+                    <div class="col-md-12 mb-1 py-2">
+                        <label class="sr-only">Bedrooms</label>
+                        <select name="bedrooms" class="form-control">
+                            <option selected="true" disabled="disabled">Bedrooms (All)</option>
+                            {% for key,value in bedroom_choices.items %}
+                            
+                            <option value="{{key}}">{{value}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-1 py-2">
+                        <select name="price" class="form-control" id="type">
+                            <option selected="true"  disabled="disabled">Max Price (Any)</option>
+                            {% for key,value in price_choices.items %}
+                            
+                            <option value="{{key}}">{{value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-block mt-4 col-md-12 mb-1" type="submit">Submit form</button>
+            </form>
+
+        </div>
+    </div>
+
+
+</section>
+<!-- ALERTS -->
+{% include 'partials/_alerts.html' %}
+<!-- Listings -->
+<section id="listings" class="py-5">
+    <div class="container">
+
+        <h3 class="text-center mb-3">Latest Listings</h3>
+        <div class="row">
+            {% if listings %}
+                {% for listing in listings %}
+                        <!-- Listings -->
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card listing-preview">
+                                <img class="card-img-top" src="{{listing.photo_main.url}}" alt="">
+                                <div class="card-img-overlay">
+                                    <h2>
+                                        <span class="badge badge-secondary text-white">${{listing.price | intcomma }}</span>
+                                    </h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="listing-heading text-center">
+                                        <h4 class="text-primary">{{ listing.title }}</h4>
+                                        <p>
+                                            <i class="fas fa-map-marker text-secondary"></i>{{ listing.city }}{{ listing.state }}{{ listing.zipcode }}</p>
+                                    </div>
+                                    <hr>
+                                    <div class="row py-2 text-secondary">
+                                        <div class="col-6">
+                                            <i class="fas fa-th-large"></i>
+                                            <span class="float-right">
+
+                                                {{ listing.sqft }}
+                                            </span>
+                                            
+                                        </div>
+                                        <div class="col-6">
+                                            <i class="fas fa-car"></i>{{ listing.garage }}</div>
+                                    </div>
+                                    <div class="row py-2 text-secondary">
+                                        <div class="col-6">
+                                            <i class="fas fa-bed"></i>
+                                          
+                                            <span class="float-right">{{ listing.bedrooms }}</span>
+                                            
+                                        </div>
+                                        <div class="col-6">
+                                            <i class="fas fa-bath"></i>
+                                            <span class="float-right">
+                                                
+                                            </span>
+                                            {{ listing.bathrooms }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row py-2 text-secondary">
+                                        <div class="col-6">
+                                            <i class="fas fa-user"></i> {{ listing.realtor }}</div>
+                                    </div>
+                                    <div class="row text-secondary pb-2">
+                                        <div class="col-6">
+                                            <i class="fas fa-clock"></i>
+                                            <span class="float-right">
+                                                {{ listing.list_date | timesince }}
+                                            </span>
+
+                                            
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">More Info</a>
+                                </div>
+                            </div>
+                        </div>
+
+                {% endfor %}
+            {% else %}
+                <div class="cal-md-12">
+                    <p>No Listings Available</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<section id="services" class="py-5 text-white">
+    <div class="container">
+        <!-- START THE FEATURETTES -->
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">Finding you're New home in just a few clicks. <span class="text-muted">It’s that
+                        easy.</span></h2>
+                <p class="lead">No more looking through add's in the papeers or walking the streets looking for Vacancie
+                    signs simply log on and start looking for youre ideal home.</p>
+            </div>
+            <div class="col-md-5">
+                <img class="card-img-top" src="{% static 'img/lady.jpg' %}" alt="">
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7 order-md-2">
+                <h2 class="featurette-heading">Find a place, get the keys its that easy  <span class="text-muted">See for
+                        yourself.</span></h2>
+                <p class="lead">Once you see a property you like in out current properties. Get in touch with one of our realtors an they will be happy to help.</p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                <img class="card-img-top" src="{% static 'img/keys.jpg' %}" alt="">
+            </div>
+        </div>
+
+
+
+        <!-- /END THE FEATURETTES -->
+    </div>
+</section>
+{% endblock %}

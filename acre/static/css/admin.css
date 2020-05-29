@@ -1,0 +1,35 @@
+#header{
+    height:10vh;
+    background: #D9CAC5 ;
+    color:#10284e;
+}
+a{
+    color:#10284e;
+}
+#branding h1,#user-tools a,#user-tools a,#header a:link, #header a:visited{
+    color:#10284e;
+}
+
+.module caption{
+     background: #D9CAC5 ;
+}
+a:link, a:visited{
+    color:#10284e;
+}
+
+div.breadcrumbs{
+    background: #c3c3c3;
+    color:#10284e;
+}
+div.breadcrumbs a{
+    color:#10284e;
+}
+input[type=submit]{
+     background: #D9CAC5;
+     color:#fff;
+}
+.module h2{
+    background: #D9CAC5;
+    color:#10284e;
+    
+}
